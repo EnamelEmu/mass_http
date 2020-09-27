@@ -5,6 +5,7 @@ use std::time::Duration;
 use futures::stream::StreamExt;
 use reqwest::Client;
 use structopt::StructOpt;
+use colored::*;
 
 
 #[derive(StructOpt)]
@@ -39,13 +40,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 		match send_fut.await {
                     Ok(resp) => {
 			if resp.status().is_success() {
-			    println!("SUCCESS: from {}", path);
+			    println!("{}: from {}", "SUCCESS".green(), path);
 			}
 			else {
-			    eprintln!("UNAUTHORIZED/REDIRECTED: from {}", path);
+			    eprintln!("{}: from {}", "UNAUTHORIZED/REDIRECTED".red(), path);
 			}
 		    }
-		    Err(_) => eprintln!("DOWN {}", path),
+		    Err(_) => eprintln!("{} {}", "DOWN".red(), path),
 		}
 	    }
 	})
