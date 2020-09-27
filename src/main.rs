@@ -12,15 +12,15 @@ use colored::*;
 struct Cli {
     /// The path to the file to read
     #[structopt(parse(from_os_str))]
-    path_file: std::path::PathBuf,
+    address_file: std::path::PathBuf,
     /// How long until the connection drops
     #[structopt(short = "t", long = "timeout", default_value = "10")]
     time_out: u32
 }
 
 
-fn read_lines(path_file: std::path::PathBuf) -> std::io::Result<Vec<String>> {
-    let file = File::open(&path_file)?;
+fn read_lines(address_file: std::path::PathBuf) -> std::io::Result<Vec<String>> {
+    let file = File::open(&address_file)?;
     let reader = BufReader::new(file);
     Ok(
         reader.lines().filter_map(Result::ok).collect()
@@ -30,7 +30,7 @@ fn read_lines(path_file: std::path::PathBuf) -> std::io::Result<Vec<String>> {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::from_args();
-    let paths: Vec<String> = read_lines(args.path_file)?;
+    let paths: Vec<String> = read_lines(args.address_file)?;
     let client = Client::builder().timeout(Duration::from_secs(args.time_out.into()))
 	.build()?;
     let fetches = futures::stream::iter(
