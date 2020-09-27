@@ -12,12 +12,11 @@ cargo build
 
 ## Usage
 
+```sh
 USAGE:
     mass_http [OPTIONS] <address-file>
-
 OPTIONS:
     -t, --timeout <time-out>    How long until the connection drops [default: 10]
-
 ARGS:
     <address-file>    The path to the file to read
-
+```
