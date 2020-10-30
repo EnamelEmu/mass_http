@@ -24,13 +24,13 @@ pub async fn fetch(paths: Vec<String>, t_out: u64) -> Result<(), Box<dyn std::er
 		match send_fut.await {
                     Ok(resp) => {
 			if resp.status().is_success() {
-			    println!("{}: from {}", "SUCCESS".green(), path);
+			    println!("{}: from {}", resp.status().as_str().green(), path);
 			}
 			else {
-			    eprintln!("{}: from {}", "UNAUTHORIZED/REDIRECTED".red(), path);
+			    eprintln!("{}: from {}", resp.status().as_str().red(), path);
 			}
 		    }
-		    Err(_) => eprintln!("{} {}", "DOWN".red(), path),
+		    Err(_) => eprintln!("{} {}", "TIMEOUT".red(), path),
 		}
 	    }
 	})
