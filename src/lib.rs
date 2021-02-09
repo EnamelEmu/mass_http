@@ -29,7 +29,7 @@ pub async fn fetch(paths: Vec<String>, t_out: u64) -> Result<(), Box<dyn std::er
 			else {
 			    eprintln!("{}: from {}", resp.status().as_str().red(), path);
 			}
-		    }
+		    } 
 		    Err(_) => eprintln!("{} {}", "TIMEOUT".red(), path),
 		}
 	    }
