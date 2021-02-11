@@ -1,6 +1,6 @@
 # mass_http
 
-mass_http is a simple async program to send many HEAD requests specified in a file
+mass_http is a simple async program to send many GET requests specified in a file
 
 ## Installation 
 
