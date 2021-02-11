@@ -16,10 +16,13 @@ pub fn read_lines(address_file: std::path::PathBuf) -> std::io::Result<Vec<Strin
 
 pub async fn fetch(paths: Vec<String>, t_out: u64) -> Result<(), Box<dyn std::error::Error>>
 {
-    let client = Client::builder().timeout(Duration::from_secs(t_out)).build()?;
+    let client = Client::builder()
+	.timeout(Duration::from_secs(t_out))
+	.user_agent("curl/7.68.0")
+	.build()?;
     let fetches = futures::stream::iter(
 	paths.into_iter().map(|path| {
-	    let send_fut = client.head(&path).send();
+	    let send_fut = client.get(&path).send();
             async move {
 		match send_fut.await {
                     Ok(resp) => {
@@ -30,7 +33,14 @@ pub async fn fetch(paths: Vec<String>, t_out: u64) -> Result<(), Box<dyn std::er
 			    eprintln!("{}: from {}", resp.status().as_str().red(), path);
 			}
 		    }
-		    Err(_) => eprintln!("{} {}", "TIMEOUT".red(), path),
+		    Err(err) => {
+			if err.is_connect() {
+			    eprintln!("{}: {}", "REFUSED".red(), path);
+			}
+			else {
+			    eprintln!("{} {}", "TIMEOUT".red(), path);
+			}
+		    }
 		}
 	    }
 	})
