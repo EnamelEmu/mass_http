@@ -18,7 +18,7 @@ pub async fn fetch(paths: Vec<String>, t_out: u64) -> Result<(), Box<dyn std::er
 {
     let client = Client::builder()
 	.timeout(Duration::from_secs(t_out))
-	.user_agent("curl/7.68.0")
+	.user_agent("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0")
 	.build()?;
     let fetches = futures::stream::iter(
 	paths.into_iter().map(|path| {
